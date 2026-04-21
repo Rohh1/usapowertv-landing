@@ -3647,7 +3647,8 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
 
         <div class="trial-cta-alt">
           Prefer to chat first?
-          <a href="#" onclick="openAI(); return false;">Ask Power AI</a>
+          <a href="#" onclick="openAI(); return false;">Ask Power AI</a> •
+          <a href="#" id="trialWhatsappLink" target="_blank">WhatsApp us</a>
         </div>
       </div>
     </div>
@@ -3685,7 +3686,7 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
         <p>Premium IPTV done right. 25,000+ channels, every device, 24/7 support.</p>
       </div>
       <div class="foot-col"><h4>Product</h4><a href="#how">How it works</a><a href="#channels">Channel list</a><a href="#setup">Setup guides</a><a href="#box">Power Box</a><a href="#pricing">Pricing</a><a href="#trial">Free trial</a></div>
-      <div class="foot-col"><h4>Support</h4><a href="#faq">FAQ</a><a href="mailto:support@usapowertv.com">Email support</a></div>
+      <div class="foot-col"><h4>Support</h4><a href="#faq">FAQ</a><a href="#" id="footerWhatsapp" target="_blank" rel="noopener">WhatsApp us</a><a href="mailto:support@usapowertv.com">Email support</a></div>
       <div class="foot-col"><h4>Company</h4><a href="#">Terms of service</a><a href="#">Privacy policy</a><a href="#">Refund policy</a></div>
     </div>
     <div class="foot-bottom">
@@ -3697,7 +3698,7 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
 
 <!-- ================= STICKY MOBILE CTA ================= -->
 <div class="sticky-mobile">
-  <a href="#trial" class="btn btn-primary">Free Trial</a>
+  <a href="#trial" class="btn btn-whatsapp">💬 Free Trial</a>
   <a href="#pricing" class="btn btn-ghost">See Plans</a>
 </div>
 
@@ -3751,18 +3752,27 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
   </div>
   <div class="ai-body" id="aiBody"></div>
   <div class="ai-footer">
-    Need a real human? <a href="mailto:support@usapowertv.com">Email support@usapowertv.com</a>
+    Need a real human? <a href="#" id="aiHumanLink" target="_blank">Message us on WhatsApp →</a>
   </div>
 </div>
 
 <script>
+// ============== CONFIG (EDIT THIS ONE LINE) ==============
+const WHATSAPP_NUMBER = '16474939858'; // international format, no +
+
 // ============== FREE TRIAL URL (billing site) ==============
 const FREE_TRIAL_URL = 'https://goldclubhosting.xyz/index.php?rp=/store/usapowertv-free-trial';
 
-// WhatsApp support stripped — all legacy waURL() callers now route to the trial page.
-function waURL(_msg) {
-  return FREE_TRIAL_URL;
+// ============== WHATSAPP HELPERS ==============
+function waURL(msg) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
+document.getElementById('footerWhatsapp').href = waURL('Hi USA Power TV! I have a question.');
+document.getElementById('aiHumanLink').href = waURL('Hi USA Power TV! I need help.');
+
+// Trial section fallback WhatsApp link
+const trialWa = document.getElementById('trialWhatsappLink');
+if (trialWa) trialWa.href = waURL('Hi USA Power TV! I want to start a free trial, can you help?');
 
 // ============== DEVICE TABS ==============
 const tabs = document.querySelectorAll('.device-tab');
@@ -3792,13 +3802,14 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
   });
 });
 
-// ============== VIDEO FALLBACK (routes to trial / AI chat) ==============
+// ============== VIDEO FALLBACK (opens WhatsApp for help) ==============
 document.querySelectorAll('.video-slot').forEach(slot => {
   slot.addEventListener('click', (e) => {
     if (slot.querySelector('iframe') || slot.querySelector('video')) return;
     e.preventDefault();
-    if (typeof openAI === 'function') { openAI('help'); }
-    else { window.open(FREE_TRIAL_URL, '_blank'); }
+    const device = slot.dataset.device || 'my device';
+    const msg = `Hi USA Power TV! I need help setting up on ${device}. Can we do a quick WhatsApp video call?`;
+    window.open(waURL(msg), '_blank');
   });
 });
 
