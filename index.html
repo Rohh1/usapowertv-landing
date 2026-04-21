@@ -3281,12 +3281,39 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
         </li>
       </ol>
 
-      <div class="video-slot walk-video" data-device="billing walkthrough">
-        <!-- <iframe src="https://www.youtube.com/embed/YT_VIDEO_ID?rel=0&modestbranding=1" allowfullscreen></iframe> -->
-        <div class="video-placeholder">
-          <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="vp-title">See the full checkout — 90 sec video</div>
-          <div class="vp-sub">Tap to ask us a question on WhatsApp</div>
+      <div class="checkout-demo" id="checkoutDemo">
+        <div class="browser-frame">
+          <div class="browser-chrome">
+            <div class="browser-dots"><span></span><span></span><span></span></div>
+            <div class="browser-url-bar" id="browserUrl">usapowertv.com/#pricing</div>
+            <div class="browser-tab-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM2 12h20M12 2a15.3 15.3 0 010 20"/></svg>
+            </div>
+          </div>
+          <div class="browser-viewport">
+            <img class="demo-screenshot scene-1" src="checkout-screenshots/01-pricing.png" alt="Pricing section" />
+            <img class="demo-screenshot scene-2" src="checkout-screenshots/02-redirect-modal.png" alt="Redirect confirmation modal" />
+            <img class="demo-screenshot scene-3" src="checkout-screenshots/03-plans-page.png" alt="GoldClub plans page" />
+            <img class="demo-screenshot scene-4" src="checkout-screenshots/04-review-checkout.png" alt="Review and checkout cart" />
+            <img class="demo-screenshot scene-5" src="checkout-screenshots/05-checkout-form.png" alt="Personal details checkout form" />
+            <img class="demo-screenshot scene-6" src="checkout-screenshots/06-complete-order.png" alt="Complete order button" />
+            <img class="demo-screenshot scene-7" src="checkout-screenshots/07-confirmation.png" alt="Order confirmation page" />
+            <img class="demo-screenshot scene-8" src="checkout-screenshots/08-service-details.png" alt="Service details with login credentials and device setup guides" />
+            <div class="fake-cursor" id="fakeCursor">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5">
+                <path d="M5.5 3.5 L5.5 20 L10 16 L13 22 L15.5 21 L12.5 15 L19 15 Z"/>
+              </svg>
+            </div>
+            <div class="click-ripple" id="clickRipple"></div>
+          </div>
+        </div>
+        <div class="demo-controls">
+          <div class="demo-progress-wrap">
+            <div class="demo-progress-bar" id="demoProgressBar"></div>
+          </div>
+          <div class="demo-scene-label" id="demoSceneLabel">
+            <span class="scene-num">1</span> of 8 · Pick your plan
+          </div>
         </div>
       </div>
     </div>
@@ -3733,6 +3760,134 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
 @media (max-width: 800px) {
   .reseller-card { grid-template-columns: 1fr; padding: 32px 24px; gap: 28px; }
 }
+
+/* ========== ANIMATED CHECKOUT DEMO ========== */
+.checkout-demo {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.browser-frame {
+  width: 100%;
+  background: #1a1f2e;
+  border: 1px solid #2a2f40;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(59, 130, 246, 0.1);
+  position: relative;
+}
+.browser-chrome {
+  background: linear-gradient(180deg, #232b44, #1a1f2e);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #2a2f40;
+}
+.browser-dots { display: flex; gap: 6px; flex-shrink: 0; }
+.browser-dots span { width: 11px; height: 11px; border-radius: 50%; background: #344060; }
+.browser-dots span:nth-child(1) { background: #ef4444; }
+.browser-dots span:nth-child(2) { background: #f59e0b; }
+.browser-dots span:nth-child(3) { background: #22c55e; }
+.browser-url-bar {
+  flex: 1;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #232b44;
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.75rem;
+  color: #9da3b5;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.browser-tab-icon { color: #5e6478; flex-shrink: 0; display: flex; align-items: center; }
+.browser-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  background: #0a0e1a;
+  overflow: hidden;
+}
+.demo-screenshot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.6s ease, transform 6s linear;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.demo-screenshot.active { opacity: 1; transform: scale(1); }
+.demo-screenshot.scene-2 { object-position: center center; }
+.fake-cursor {
+  position: absolute;
+  top: 50%; left: 50%;
+  z-index: 50;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  opacity: 0;
+  transition: opacity 0.3s, left 0.9s cubic-bezier(0.4, 0, 0.2, 1), top 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fake-cursor.visible { opacity: 1; }
+.click-ripple {
+  position: absolute;
+  width: 40px; height: 40px;
+  border: 2px solid #ef4444;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 49;
+}
+.click-ripple.clicking { animation: ripplePulse 0.7s ease-out; }
+@keyframes ripplePulse {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.3); border-width: 3px; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); border-width: 1px; }
+}
+.demo-controls { display: flex; flex-direction: column; gap: 10px; }
+.demo-progress-wrap {
+  width: 100%;
+  height: 4px;
+  background: #232b44;
+  border-radius: 100px;
+  overflow: hidden;
+}
+.demo-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #dc2626, #3b82f6);
+  border-radius: 100px;
+  width: 0%;
+  transition: width 0.3s linear;
+}
+.demo-scene-label { font-size: 0.88rem; color: #9da3b5; text-align: center; }
+.demo-scene-label .scene-num {
+  display: inline-grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.72rem;
+  margin-right: 6px;
+  vertical-align: middle;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4);
+}
+@media (max-width: 900px) {
+  .checkout-demo { max-width: 100%; }
+  .browser-viewport { aspect-ratio: 4 / 3; }
+  .browser-url-bar { font-size: 0.68rem; padding: 4px 10px; }
+}
 </style>
 
 <!-- ================= FAQ ================= -->
@@ -4176,6 +4331,101 @@ const fadeObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in, .fade-in-stagger').forEach(el => {
   fadeObserver.observe(el);
 });
+
+// ============== ANIMATED CHECKOUT DEMO (8 real screenshots, 104s loop) ==============
+(function initCheckoutDemo() {
+  const demoEl = document.getElementById('checkoutDemo');
+  if (!demoEl) return;
+
+  const screenshots = demoEl.querySelectorAll('.demo-screenshot');
+  const progressBar = document.getElementById('demoProgressBar');
+  const sceneLabel = document.getElementById('demoSceneLabel');
+  const cursor = document.getElementById('fakeCursor');
+  const ripple = document.getElementById('clickRipple');
+  const browserUrl = document.getElementById('browserUrl');
+
+  const SCENES = [
+    { label: 'Pick your plan', url: 'usapowertv.com/#pricing', cursor: { x: 61, y: 88 } },
+    { label: 'Confirm redirect', url: 'usapowertv.com/#pricing', cursor: { x: 26, y: 85 } },
+    { label: 'Browse GoldClub plans', url: 'goldclubhosting.xyz/3-month-plans', cursor: { x: 50, y: 72 } },
+    { label: 'Review your order', url: 'goldclubhosting.xyz/cart', cursor: { x: 84, y: 70 } },
+    { label: 'Enter your details', url: 'goldclubhosting.xyz/checkout', cursor: { x: 25, y: 30 } },
+    { label: 'Complete order', url: 'goldclubhosting.xyz/checkout', cursor: { x: 50, y: 82 } },
+    { label: 'Order confirmed ✓', url: 'goldclubhosting.xyz/order-confirmation', cursor: { x: 50, y: 50 }, noCursor: true },
+    { label: 'Your credentials + setup', url: 'goldclubhosting.xyz/clientarea', cursor: { x: 50, y: 50 }, noCursor: true },
+  ];
+
+  let demoTimeouts = [];
+  let demoStartTime = null;
+  let progressInterval = null;
+  const SCENE_DURATION = 13000;
+  const DEMO_DURATION = SCENES.length * SCENE_DURATION;
+
+  function clearDemoTimeouts() {
+    demoTimeouts.forEach(t => clearTimeout(t));
+    demoTimeouts = [];
+    if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+  }
+
+  function schedule(fn, delay) {
+    const t = setTimeout(fn, delay);
+    demoTimeouts.push(t);
+    return t;
+  }
+
+  function showScene(idx) {
+    screenshots.forEach((img, i) => img.classList.toggle('active', i === idx));
+    const scene = SCENES[idx];
+    sceneLabel.innerHTML = `<span class="scene-num">${idx + 1}</span> of ${SCENES.length} · ${scene.label}`;
+    if (browserUrl) browserUrl.textContent = scene.url;
+
+    if (scene.noCursor) {
+      cursor.classList.remove('visible');
+    } else {
+      schedule(() => {
+        cursor.style.left = scene.cursor.x + '%';
+        cursor.style.top = scene.cursor.y + '%';
+        cursor.classList.add('visible');
+      }, 1500);
+      schedule(() => {
+        if (ripple) {
+          ripple.style.left = scene.cursor.x + '%';
+          ripple.style.top = scene.cursor.y + '%';
+          ripple.classList.remove('clicking');
+          void ripple.offsetWidth;
+          ripple.classList.add('clicking');
+        }
+      }, 9000);
+    }
+  }
+
+  function runCheckoutDemo() {
+    clearDemoTimeouts();
+    demoStartTime = Date.now();
+    progressInterval = setInterval(() => {
+      const elapsed = Date.now() - demoStartTime;
+      const pct = Math.min(100, (elapsed / DEMO_DURATION) * 100);
+      progressBar.style.width = pct + '%';
+    }, 100);
+    SCENES.forEach((scene, idx) => {
+      schedule(() => showScene(idx), idx * SCENE_DURATION);
+    });
+    schedule(runCheckoutDemo, DEMO_DURATION);
+  }
+
+  window.restartCheckoutDemo = runCheckoutDemo;
+
+  const demoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        showScene(0);
+        runCheckoutDemo();
+        demoObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  demoObserver.observe(demoEl);
+})();
 
 // ============== NAV SCROLL ==============
 const nav = document.querySelector('nav');
