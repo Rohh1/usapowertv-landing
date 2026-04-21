@@ -2671,6 +2671,16 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
 
 <body>
 
+<!-- ================= PPV / EVENT COUNTDOWN BANNER ================= -->
+<!-- Edit PPV_EVENT in the script below to change event name, date, and CTA -->
+<div class="ppv-banner hidden" id="ppvBanner">
+  <span class="ppv-banner-live">Live event</span>
+  <span class="ppv-banner-event" id="ppvBannerEvent">—</span>
+  <span class="ppv-countdown" id="ppvCountdown">--d --h --m --s</span>
+  <a class="ppv-cta" id="ppvCta" href="#trial">Get it free →</a>
+  <button class="ppv-close" id="ppvClose" aria-label="Close banner">✕</button>
+</div>
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <!-- Main brand logo: TV screen with play button -->
   <symbol id="brand-logo" viewBox="0 0 24 24">
@@ -3888,6 +3898,179 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
   .browser-viewport { aspect-ratio: 4 / 3; }
   .browser-url-bar { font-size: 0.68rem; padding: 4px 10px; }
 }
+
+/* ========== PPV / EVENT BANNER (top) ========== */
+.ppv-banner {
+  position: relative;
+  background: linear-gradient(90deg, #7f1d1d, #dc2626 50%, #1e40af);
+  color: #fff;
+  padding: 10px 44px 10px 16px;
+  font-size: 0.9rem;
+  text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+  z-index: 40;
+}
+.ppv-banner.hidden { display: none; }
+.ppv-banner-live {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(0,0,0,0.3); padding: 2px 10px; border-radius: 100px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.ppv-banner-live::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: #22c55e; box-shadow: 0 0 0 0 rgba(34,197,94,0.7);
+  animation: pulseDot 2s infinite;
+}
+@keyframes pulseDot {
+  0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+.ppv-banner-event { font-weight: 700; }
+.ppv-countdown {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  background: rgba(0,0,0,0.35);
+  padding: 3px 10px; border-radius: 6px;
+  font-weight: 700; letter-spacing: 0.02em;
+}
+.ppv-cta {
+  color: #fff; text-decoration: underline;
+  font-weight: 700;
+}
+.ppv-close {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: transparent; border: none; color: rgba(255,255,255,0.7);
+  font-size: 1.1rem; cursor: pointer; padding: 4px 10px; line-height: 1;
+}
+.ppv-close:hover { color: #fff; }
+@media (max-width: 640px) {
+  .ppv-banner { font-size: 0.8rem; gap: 8px; padding: 8px 38px 8px 10px; }
+  .ppv-banner-live { font-size: 0.65rem; }
+}
+
+/* ========== SOCIAL-PROOF TOASTS (bottom-left) ========== */
+.social-toast {
+  position: fixed;
+  left: 20px; bottom: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 12px 38px 12px 14px;
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.6);
+  display: flex; align-items: center; gap: 12px;
+  max-width: 320px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 45;
+}
+.social-toast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.social-toast-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), #991b1b);
+  color: #fff; font-weight: 700; font-size: 0.95rem;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+}
+.social-toast-text { font-size: 0.82rem; line-height: 1.35; color: var(--text); }
+.social-toast-text strong { color: var(--text); }
+.social-toast-text .meta { color: var(--text-dim); font-size: 0.72rem; display: block; margin-top: 2px; }
+.social-toast-close {
+  position: absolute; right: 6px; top: 6px;
+  background: transparent; border: none; color: var(--text-dim);
+  font-size: 0.9rem; cursor: pointer; padding: 4px 8px; line-height: 1;
+}
+.social-toast-close:hover { color: var(--text); }
+@media (max-width: 640px) {
+  .social-toast { left: 10px; right: 10px; bottom: 78px; max-width: none; }
+}
+
+/* ========== STICKY MOBILE CTA ========== */
+.sticky-cta {
+  position: fixed;
+  left: 10px; right: 10px; bottom: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: none;
+  align-items: center; gap: 10px;
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7);
+  z-index: 46;
+  animation: stickyIn 0.4s ease;
+}
+@keyframes stickyIn {
+  from { transform: translateY(120%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.sticky-cta-text { flex: 1; line-height: 1.25; }
+.sticky-cta-text strong { color: var(--text); font-size: 0.92rem; display: block; }
+.sticky-cta-text span { color: var(--text-dim); font-size: 0.74rem; }
+.sticky-cta .btn {
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.sticky-cta-close {
+  background: transparent; border: none; color: var(--text-dim);
+  font-size: 1.1rem; cursor: pointer; padding: 4px 6px; line-height: 1;
+  align-self: flex-start;
+}
+@media (max-width: 900px) {
+  .sticky-cta.active { display: flex; }
+  body.has-sticky-cta { padding-bottom: 80px; }
+}
+
+/* ========== RETURNING-VISITOR POPUP ========== */
+.return-popup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(3, 7, 18, 0.88);
+  display: none; align-items: center; justify-content: center;
+  z-index: 105;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.return-popup-overlay.active { display: flex; }
+.return-popup {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px 28px;
+  max-width: 440px; width: 100%;
+  text-align: center;
+  position: relative;
+  animation: popupIn 0.35s ease;
+}
+@keyframes popupIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+.return-popup h3 {
+  font-family: var(--font-display);
+  font-size: 1.55rem; margin-bottom: 10px;
+}
+.return-popup p { color: var(--text-dim); margin-bottom: 22px; font-size: 0.95rem; }
+.return-popup .actions { display: flex; flex-direction: column; gap: 10px; }
+.return-popup-close {
+  position: absolute; top: 10px; right: 10px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-dim);
+  width: 30px; height: 30px; border-radius: 50%;
+  cursor: pointer; font-size: 0.9rem;
+}
+.return-popup-close:hover { border-color: var(--red); color: var(--text); }
+.return-popup-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--red), #991b1b);
+  color: #fff; padding: 4px 12px; border-radius: 100px;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
 </style>
 
 <!-- ================= FAQ ================= -->
@@ -3988,6 +4171,81 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
   <div class="ai-body" id="aiBody"></div>
   <div class="ai-footer">
     Need a real human? <a href="#" id="aiHumanLink" target="_blank">Message us on WhatsApp →</a>
+  </div>
+</div>
+
+<!-- ================= GUIDED TOUR ================= -->
+<div class="tour-overlay" id="tourOverlay"></div>
+<div class="tour-spotlight" id="tourSpotlight"></div>
+<div class="tour-tooltip" id="tourTooltip" data-arrow="top">
+  <div class="tour-step-num" id="tourStepNum">Step 1 of 4</div>
+  <h4 id="tourTitle"></h4>
+  <p id="tourText"></p>
+  <div class="tour-actions">
+    <div class="tour-dots" id="tourDots"></div>
+    <div class="tour-buttons">
+      <button class="tour-btn skip" onclick="endTour()">Skip</button>
+      <button class="tour-btn next" id="tourNextBtn" onclick="tourNext()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EXIT-INTENT POPUP ================= -->
+<div class="exit-popup-overlay" id="exitPopup">
+  <div class="exit-popup">
+    <button class="exit-popup-close" onclick="closeExit()">✕</button>
+    <div class="exit-popup-emoji">🍁</div>
+    <h3>One last thing —</h3>
+    <p>If the buffering, missing games, and juggling 4 subscriptions has been killing you, it's <strong>worth 30 seconds</strong> to see this actually work.<br/><br/>24 hours free. No card. Zero risk.</p>
+    <div class="actions">
+      <a href="#trial" class="btn btn-primary" onclick="closeExit(); document.getElementById('trial').scrollIntoView({behavior:'smooth'});">🎬 Yes, Send Me a Free Trial</a>
+      <button class="btn btn-ghost" onclick="closeExit()">No thanks, I'm just browsing</button>
+    </div>
+    <div class="tiny-text">Trusted by 12,000+ cord-cutters worldwide</div>
+  </div>
+</div>
+
+<!-- ================= SOCIAL-PROOF TOAST ================= -->
+<div class="social-toast" id="socialToast">
+  <div class="social-toast-avatar" id="socialAvatar">M</div>
+  <div class="social-toast-text" id="socialText">
+    <strong>Mike in Dallas</strong> just started a free trial
+    <span class="meta">2 minutes ago</span>
+  </div>
+  <button class="social-toast-close" id="socialClose" aria-label="Close">✕</button>
+</div>
+
+<!-- ================= STICKY MOBILE CTA ================= -->
+<div class="sticky-cta" id="stickyCTA">
+  <div class="sticky-cta-text">
+    <strong>24 hours free — no card</strong>
+    <span>25,000+ channels · every NFL game</span>
+  </div>
+  <a href="#trial" class="btn btn-primary" id="stickyCtaBtn">Start trial →</a>
+  <button class="sticky-cta-close" id="stickyCtaClose" aria-label="Close">✕</button>
+</div>
+
+<!-- ================= RETURNING-VISITOR POPUP ================= -->
+<div class="return-popup-overlay" id="returnPopup">
+  <div class="return-popup">
+    <button class="return-popup-close" onclick="closeReturn()">✕</button>
+    <div class="return-popup-tag">Welcome back</div>
+    <h3>Still thinking it over?</h3>
+    <p>We noticed you stopped by before. If the price is the hang-up — try it 24 hours on us. No card, no commitment.</p>
+    <div class="actions">
+      <a href="#trial" class="btn btn-primary" onclick="closeReturn(); document.getElementById('trial').scrollIntoView({behavior:'smooth'});">🎬 Start my free 24h</a>
+      <button class="btn btn-ghost" onclick="closeReturn()">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SCROLL NUDGE TOAST ================= -->
+<div class="scroll-nudge" id="scrollNudge" onclick="openAI(); hideNudge();">
+  <button class="scroll-nudge-close" onclick="event.stopPropagation(); hideNudge();">✕</button>
+  <div class="scroll-nudge-icon">💬</div>
+  <div class="scroll-nudge-text">
+    <strong>Need help choosing?</strong>
+    <span>Ask Power AI — takes 30 seconds</span>
   </div>
 </div>
 
@@ -4900,48 +5158,155 @@ document.addEventListener('click', (e) => {
   // Close any open tip when clicking elsewhere
   document.querySelectorAll('.help-tip.show').forEach(t => t.classList.remove('show'));
 });
+
+// ==========================================================
+// ============== PPV / EVENT COUNTDOWN BANNER ==============
+// ==========================================================
+// Update these three fields whenever a new event drops:
+const PPV_EVENT = {
+  name: 'UFC 316 PPV — Saturday',
+  date: '2026-05-10T02:00:00Z',   // ISO date of kickoff (UTC)
+  ctaText: 'Watch it free →'
+};
+(function initPpvBanner() {
+  const banner = document.getElementById('ppvBanner');
+  const eventEl = document.getElementById('ppvBannerEvent');
+  const countdownEl = document.getElementById('ppvCountdown');
+  const ctaEl = document.getElementById('ppvCta');
+  const closeBtn = document.getElementById('ppvClose');
+  if (!banner) return;
+
+  if (localStorage.getItem('usapower_ppv_dismissed') === PPV_EVENT.date) return;
+
+  const target = new Date(PPV_EVENT.date).getTime();
+  if (isNaN(target) || target < Date.now()) return;
+
+  eventEl.textContent = PPV_EVENT.name;
+  ctaEl.textContent = PPV_EVENT.ctaText;
+  banner.classList.remove('hidden');
+
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) { banner.classList.add('hidden'); clearInterval(timer); return; }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    countdownEl.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+  }
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  closeBtn.addEventListener('click', () => {
+    banner.classList.add('hidden');
+    localStorage.setItem('usapower_ppv_dismissed', PPV_EVENT.date);
+  });
+})();
+
+// ==========================================================
+// ============== SOCIAL-PROOF TOASTS =======================
+// ==========================================================
+(function initSocialToasts() {
+  const toast = document.getElementById('socialToast');
+  const avatar = document.getElementById('socialAvatar');
+  const text = document.getElementById('socialText');
+  const close = document.getElementById('socialClose');
+  if (!toast) return;
+  if (sessionStorage.getItem('usapower_social_dismissed')) return;
+
+  const EVENTS = [
+    { name: 'Mike', city: 'Dallas, TX', action: 'started a free trial', ago: '2 minutes ago' },
+    { name: 'Sarah', city: 'Toronto, ON', action: 'ordered the 6-month plan', ago: '5 minutes ago' },
+    { name: 'Carlos', city: 'Miami, FL', action: 'started a free trial', ago: '8 minutes ago' },
+    { name: 'Jess', city: 'Chicago, IL', action: 'ordered Box + 1 Year', ago: '12 minutes ago' },
+    { name: 'Dmitri', city: 'Brooklyn, NY', action: 'started a free trial', ago: '14 minutes ago' },
+    { name: 'Ashley', city: 'Phoenix, AZ', action: 'ordered the 12-month plan', ago: '17 minutes ago' },
+    { name: 'Rob', city: 'Vancouver, BC', action: 'started a free trial', ago: '19 minutes ago' },
+    { name: 'Latoya', city: 'Atlanta, GA', action: 'ordered the 3-month plan', ago: '22 minutes ago' },
+    { name: 'Kenji', city: 'Seattle, WA', action: 'started a free trial', ago: '26 minutes ago' },
+    { name: 'Priya', city: 'Calgary, AB', action: 'ordered Box + Lifetime', ago: '29 minutes ago' }
+  ];
+
+  let idx = 0;
+  let hideTimer = null;
+
+  function show() {
+    const ev = EVENTS[idx];
+    avatar.textContent = ev.name[0];
+    text.innerHTML = `<strong>${ev.name} in ${ev.city}</strong> ${ev.action}<span class="meta">${ev.ago}</span>`;
+    toast.classList.add('visible');
+    hideTimer = setTimeout(() => {
+      toast.classList.remove('visible');
+      idx = (idx + 1) % EVENTS.length;
+      setTimeout(show, 14000); // gap between toasts
+    }, 6500);
+  }
+
+  close.addEventListener('click', () => {
+    toast.classList.remove('visible');
+    clearTimeout(hideTimer);
+    sessionStorage.setItem('usapower_social_dismissed', '1');
+  });
+
+  // First toast after 25s on page
+  setTimeout(show, 25000);
+})();
+
+// ==========================================================
+// ============== STICKY MOBILE CTA =========================
+// ==========================================================
+(function initStickyCta() {
+  const sticky = document.getElementById('stickyCTA');
+  const closeBtn = document.getElementById('stickyCtaClose');
+  if (!sticky) return;
+  if (sessionStorage.getItem('usapower_sticky_dismissed')) return;
+
+  // Show after 8s on page, only on mobile (media query gates .active display)
+  setTimeout(() => {
+    sticky.classList.add('active');
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      document.body.classList.add('has-sticky-cta');
+    }
+  }, 8000);
+
+  closeBtn.addEventListener('click', () => {
+    sticky.classList.remove('active');
+    document.body.classList.remove('has-sticky-cta');
+    sessionStorage.setItem('usapower_sticky_dismissed', '1');
+  });
+})();
+
+// ==========================================================
+// ============== RETURNING-VISITOR POPUP ===================
+// ==========================================================
+const returnPopup = document.getElementById('returnPopup');
+function closeReturn() { if (returnPopup) returnPopup.classList.remove('active'); }
+(function initReturnPopup() {
+  if (!returnPopup) return;
+  const visits = parseInt(localStorage.getItem('usapower_visits') || '0', 10);
+  const converted = localStorage.getItem('usapower_trial_clicked') === '1';
+  const alreadyShown = localStorage.getItem('usapower_return_shown') === '1';
+  localStorage.setItem('usapower_visits', String(visits + 1));
+  if (visits >= 1 && !converted && !alreadyShown) {
+    // 2nd+ visit, didn't click trial, haven't seen this popup yet → show after 4s
+    setTimeout(() => {
+      if (tourOverlay.classList.contains('active')) return;
+      if (exitPopup.classList.contains('active')) return;
+      returnPopup.classList.add('active');
+      localStorage.setItem('usapower_return_shown', '1');
+    }, 4000);
+  }
+  returnPopup.addEventListener('click', (e) => { if (e.target === returnPopup) closeReturn(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && returnPopup.classList.contains('active')) closeReturn();
+  });
+})();
+
+// Mark user as "converted" when they click any Free Trial CTA
+document.querySelectorAll('a[href="#trial"], a[href*="free-trial"]').forEach(a => {
+  a.addEventListener('click', () => localStorage.setItem('usapower_trial_clicked', '1'));
+});
 </script>
-
-<!-- ================= GUIDED TOUR ================= -->
-<div class="tour-overlay" id="tourOverlay"></div>
-<div class="tour-spotlight" id="tourSpotlight"></div>
-<div class="tour-tooltip" id="tourTooltip" data-arrow="top">
-  <div class="tour-step-num" id="tourStepNum">Step 1 of 4</div>
-  <h4 id="tourTitle"></h4>
-  <p id="tourText"></p>
-  <div class="tour-actions">
-    <div class="tour-dots" id="tourDots"></div>
-    <div class="tour-buttons">
-      <button class="tour-btn skip" onclick="endTour()">Skip</button>
-      <button class="tour-btn next" id="tourNextBtn" onclick="tourNext()">Next →</button>
-    </div>
-  </div>
-</div>
-
-<!-- ================= EXIT-INTENT POPUP ================= -->
-<div class="exit-popup-overlay" id="exitPopup">
-  <div class="exit-popup">
-    <button class="exit-popup-close" onclick="closeExit()">✕</button>
-    <div class="exit-popup-emoji">🍁</div>
-    <h3>One last thing —</h3>
-    <p>If the buffering, missing games, and juggling 4 subscriptions has been killing you, it's <strong>worth 30 seconds</strong> to see this actually work.<br/><br/>24 hours free. No card. Zero risk.</p>
-    <div class="actions">
-      <a href="#trial" class="btn btn-primary" onclick="closeExit(); document.getElementById('trial').scrollIntoView({behavior:'smooth'});">🎬 Yes, Send Me a Free Trial</a>
-      <button class="btn btn-ghost" onclick="closeExit()">No thanks, I'm just browsing</button>
-    </div>
-    <div class="tiny-text">Trusted by 12,000+ cord-cutters worldwide</div>
-  </div>
-</div>
-
-<!-- ================= SCROLL NUDGE TOAST ================= -->
-<div class="scroll-nudge" id="scrollNudge" onclick="openAI(); hideNudge();">
-  <button class="scroll-nudge-close" onclick="event.stopPropagation(); hideNudge();">✕</button>
-  <div class="scroll-nudge-icon">💬</div>
-  <div class="scroll-nudge-text">
-    <strong>Need help choosing?</strong>
-    <span>Ask Power AI — takes 30 seconds</span>
-  </div>
-</div>
 
 </body>
 </html>
