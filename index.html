@@ -3967,17 +3967,16 @@ function renderChannelResults(query) {
   if (!resultsEl) return;
   const q = (query || '').trim().toLowerCase();
 
-  // Empty state (default — show featured highlights)
+  // Empty state (default — show the entire preview list)
   if (!q) {
-    const featured = CHANNEL_DB.filter(c => c.featured);
     resultsEl.innerHTML = `
       <div class="channel-hint">
         <span style="font-size: 1.1rem;">💡</span>
         <div><strong>Try searching:</strong> ESPN, NFL RedZone, HBO, Netflix, Fox News, UFC, CNN, Disney+, Peacock, or any channel you're worried we might not have.</div>
       </div>
-      ${featured.map(c => renderChannelRow(c)).join('')}
+      ${CHANNEL_DB.map(c => renderChannelRow(c)).join('')}
     `;
-    if (resultCountEl) resultCountEl.textContent = '25,000+ channels available';
+    if (resultCountEl) resultCountEl.textContent = `${CHANNEL_DB.length} previewed • 25,000+ available`;
     return;
   }
 
@@ -3995,16 +3994,16 @@ function renderChannelResults(query) {
         <div class="ico">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
         </div>
-        <strong>Hmm, "${query}" isn't in our featured list</strong>
-        <p>We carry 25,000+ channels — many niche ones aren't listed here. Message us to confirm in 30 seconds.</p>
+        <strong>Hmm, "${query}" isn't in our preview list</strong>
+        <p>We carry 25,000+ channels — many niche ones aren't in this preview. Message us to confirm in 30 seconds.</p>
         <button onclick="openAI && openAI();">💬 Ask Power AI</button>
       </div>
     `;
-    if (resultCountEl) resultCountEl.textContent = 'No match in featured list';
+    if (resultCountEl) resultCountEl.textContent = 'No match in preview list';
     return;
   }
 
-  resultsEl.innerHTML = matches.slice(0, 30).map(renderChannelRow).join('');
+  resultsEl.innerHTML = matches.map(renderChannelRow).join('');
   if (resultCountEl) resultCountEl.textContent = `${matches.length} match${matches.length === 1 ? '' : 'es'} • 25,000+ total`;
 }
 
