@@ -2696,6 +2696,7 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
       <a href="#box">📦 Preloaded Box</a>
       <a href="#setup">Setup</a>
       <a href="#pricing">Pricing</a>
+      <a href="#resellers">Resellers</a>
       <a href="#trial" class="btn btn-primary">Free Trial →</a>
     </div>
   </div>
@@ -3655,6 +3656,84 @@ footer { background: var(--bg-raised); border-top: 1px solid var(--border); padd
   </div>
 </section>
 
+<!-- ================= RESELLERS ================= -->
+<section id="resellers" style="padding: 80px 0;">
+  <div class="wrap">
+    <div class="reseller-card">
+      <div class="reseller-text">
+        <span class="eyebrow"><span class="dot"></span> For resellers</span>
+        <h2 style="margin-top: 16px;">Run your own <span class="maple-text">IPTV business.</span></h2>
+        <p style="color: var(--text-dim); font-size: 1.05rem; margin: 16px 0 24px; max-width: 560px;">
+          Get a reseller panel with credit-based provisioning, your own branding, and bulk pricing. Spin up subscriptions in seconds, manage customers from one dashboard, and pocket the margin.
+        </p>
+        <ul class="reseller-features">
+          <li>Bulk credit pricing — better margins on every line</li>
+          <li>Create / extend / disable subs in one click</li>
+          <li>Same 25,000+ channel catalog and uptime SLA</li>
+          <li>White-label options for serious volume</li>
+        </ul>
+      </div>
+      <div class="reseller-cta">
+        <div class="reseller-cta-title">Order a reseller panel</div>
+        <div class="reseller-cta-sub">Contact us directly to set up your panel and discuss pricing.</div>
+        <a href="#" id="resellerWhatsapp" target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg" style="width: 100%; margin-bottom: 10px;">💬 WhatsApp us</a>
+        <a href="https://t.me/FlexSupport489" target="_blank" rel="noopener" class="btn btn-ghost btn-lg" style="width: 100%;">✈️ Telegram @FlexSupport489</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.reseller-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.reseller-card::before {
+  content: '';
+  position: absolute;
+  top: -40%; left: -10%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent 60%);
+  pointer-events: none;
+}
+.reseller-card > * { position: relative; z-index: 1; }
+.reseller-features { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.reseller-features li {
+  padding-left: 24px; position: relative;
+  color: var(--text-dim); font-size: 0.95rem;
+}
+.reseller-features li::before {
+  content: '✓'; position: absolute; left: 0; top: 0;
+  color: var(--accent-live); font-weight: 700;
+}
+.reseller-cta {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+}
+.reseller-cta-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem; font-weight: 700;
+  margin-bottom: 6px;
+}
+.reseller-cta-sub {
+  font-size: 0.9rem; color: var(--text-dim);
+  margin-bottom: 20px;
+}
+@media (max-width: 800px) {
+  .reseller-card { grid-template-columns: 1fr; padding: 32px 24px; gap: 28px; }
+}
+</style>
+
 <!-- ================= FAQ ================= -->
 <section id="faq">
   <div class="wrap">
@@ -3773,6 +3852,10 @@ document.getElementById('aiHumanLink').href = waURL('Hi USA Power TV! I need hel
 // Trial section fallback WhatsApp link
 const trialWa = document.getElementById('trialWhatsappLink');
 if (trialWa) trialWa.href = waURL('Hi USA Power TV! I want to start a free trial, can you help?');
+
+// Reseller section WhatsApp link
+const resellerWa = document.getElementById('resellerWhatsapp');
+if (resellerWa) resellerWa.href = waURL("Hi USA Power TV! I'd like to order a reseller panel — please send me the details.");
 
 // ============== DEVICE TABS ==============
 const tabs = document.querySelectorAll('.device-tab');
