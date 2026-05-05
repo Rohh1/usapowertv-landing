@@ -5323,6 +5323,47 @@ function closeReturn() { if (returnPopup) returnPopup.classList.remove('active')
 document.querySelectorAll('a[href="#trial"], a[href*="free-trial"]').forEach(a => {
   a.addEventListener('click', () => localStorage.setItem('usapower_trial_clicked', '1'));
 });
+
+// ====== Meta Pixel event tracking ======
+const PRODUCT_VALUES = {
+  '1 Month subscription ($15)':    { value: 15,  content_name: '1 Month' },
+  '3 Months subscription ($40)':   { value: 40,  content_name: '3 Months' },
+  '6 Months subscription ($70)':   { value: 70,  content_name: '6 Months' },
+  '12 Months subscription ($120)': { value: 120, content_name: '12 Months' },
+  'Power Box + 1 Year ($220)':     { value: 220, content_name: 'Box + 1 Year' },
+  'Power Box + Lifetime ($350)':   { value: 350, content_name: 'Box + Lifetime' }
+};
+
+// Paid-plan CTAs -> InitiateCheckout
+document.querySelectorAll('.redirect-link').forEach(link => {
+  link.addEventListener('click', () => {
+    const label = link.getAttribute('data-product') || 'Unknown';
+    const meta  = PRODUCT_VALUES[label] || { value: 0, content_name: label };
+    if (window.fbq) fbq('track', 'InitiateCheckout', {
+      content_name: meta.content_name,
+      value: meta.value,
+      currency: 'USD'
+    });
+  });
+});
+
+// Free trial CTAs -> Lead
+document.querySelectorAll('.device-trial-btn, .trial-cta-button, a[href="#trial"], a[href*="free-trial"]').forEach(el => {
+  el.addEventListener('click', () => {
+    if (window.fbq) fbq('track', 'Lead', {
+      content_name: 'Free 24h Trial',
+      value: 0,
+      currency: 'USD'
+    });
+  });
+});
+
+// WhatsApp CTAs -> Contact
+document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+  el.addEventListener('click', () => {
+    if (window.fbq) fbq('track', 'Contact', { content_name: 'WhatsApp' });
+  });
+});
 </script>
 
 </body>
